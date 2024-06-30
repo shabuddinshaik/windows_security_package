@@ -1,0 +1,16 @@
+---
+- name: Download security package MSI
+  win_get_url:
+    url: "{{ security_package_url }}"
+    dest: "C:\\Temp\\{{ security_package_name }}.msi"
+
+- name: Install security package
+  win_package:
+    path: "C:\\Temp\\{{ security_package_name }}.msi"
+    state: present
+    product_id: "{{ security_package_name }}"
+  register: install_result
+
+- name: Reboot if necessary
+  win_reboot:
+    when: install_result.reboot_required

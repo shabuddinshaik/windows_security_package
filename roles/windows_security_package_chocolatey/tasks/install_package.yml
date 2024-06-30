@@ -1,0 +1,10 @@
+---
+- name: Install security package using Chocolatey
+  win_chocolatey:
+    name: "{{ security_package_name }}"
+    state: present
+  register: install_result
+
+- name: Reboot if necessary
+  win_reboot:
+    when: install_result.reboot_required

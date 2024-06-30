@@ -1,0 +1,27 @@
+---
+- name: Ensure Chocolatey is installed on Windows servers
+  hosts: windows_servers
+  gather_facts: yes
+  tasks:
+    - name: Install Chocolatey
+      win_chocolatey:
+        name: chocolatey
+        state: present
+      become: yes
+
+- name: Update Windows Security Package using Chocolatey
+  hosts: windows_servers
+  roles:
+    - role: windows_security_package_chocolatey
+      security_package_name: "securitypackage"
+  tags: chocolatey
+
+- name: Update Windows Security Package using URL
+  hosts: windows_servers
+  roles:
+    - role: windows_security_package_URL
+      security_update_url: "http://example.com/path/to/security/update.msi"
+      update_filename: "update.msi"
+  tags: url
+
+
